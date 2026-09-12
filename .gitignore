@@ -1,0 +1,17 @@
+# Python virtual environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Local environment files
+.env
+
+# JetBrains IDE settings
+.idea/
+*.iml
+
+# Operating-system files
+.DS_Store
+Thumbs.db
