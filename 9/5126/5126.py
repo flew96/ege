@@ -1,20 +1,22 @@
-f = open(r"9\4614\4614.txt")
+f = open(r"9\5126\5126.txt")
 
 data = [
-    [int(i) for i in row.split()]for row in f
+    [int(i) for i in row.split()] for row in f
 ]
 
 def check(row: list):
-    sorted_row = sorted(row)
     repeatable = []
+    uniq = []
     
     for i in row:
         if row.count(i) > 1:
             repeatable.append(i)
+        else:
+            uniq.append(i)
     
     return (
-        (sorted_row[3] < sum(sorted_row[:3])) and
-        (len(repeatable) == 2)
+        (len(repeatable) == 3) and
+        (sum(uniq) / 3 <= sum(repeatable))
     )
 
 count = 0
