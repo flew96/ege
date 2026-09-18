@@ -8,6 +8,7 @@ for word in product(sorted("ЦВЕТОК"), repeat=6):
     
     if (
         index % 2 == 1 and
+        "В" not in word and
         "Е" not in word and
         "К" not in word and
         word.count("Т") == 2 and

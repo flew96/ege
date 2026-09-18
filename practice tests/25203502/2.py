@@ -1,0 +1,18 @@
+from itertools import product, permutations
+
+def f(z, w, x, y):
+    return (
+        ((y <= w) <= x) or (not z)
+    )
+
+for a in product([0, 1], repeat=7):
+    table = [
+        (a[0], a[1], 0, 0),
+        (a[2], 1, a[3], a[4]),
+        (a[5], 0, 1, a[6])
+    ]
+    
+    if len(table) == len(set(table)):
+        for p in permutations("xywz"):
+            if [f(**dict(zip(p, row))) for row in table] == [0, 0, 0]:
+                print(p)
