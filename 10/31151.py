@@ -14,5 +14,3 @@ print(bin_host_ip)
 answ = ['10111001', '11111001', '00111111', '11111111']
 
 print(sum([int(i, 2) for i in answ]))
-
-print([int(i, 2) for i in answ])

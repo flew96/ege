@@ -13,3 +13,4 @@ print(bin_host_ip)
 
 answ = ['00001011', '01011111', '11111111', '11111110']
 print([int(i, 2) for i in answ])
+#1195255254
