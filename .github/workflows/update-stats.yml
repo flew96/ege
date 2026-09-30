@@ -22,6 +22,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Test statistics and commit helper
+        run: python -m unittest discover -s tests -v
       - name: Update README statistics
         run: python scripts/update_stats.py
       - name: Commit changed statistics
