@@ -1,5 +1,6 @@
 """Update EGE statistics while preserving README content outside the markers."""
 
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -13,14 +14,27 @@ def update_stats(root: Path) -> None:
          if path.is_dir() and path.name.isascii() and path.name.isdigit()),
         key=lambda path: (int(path.name), path.name),
     )
-    stats = [(path.name, sum(file.is_file() for file in path.rglob("*.py")))
-             for path in tasks]
+    counts = Counter({path.name: sum(file.is_file() for file in path.rglob("*.py"))
+                      for path in tasks})
     practice = root / "practice tests"
-    variants = sum(path.is_dir() for path in practice.iterdir()) if practice.is_dir() else 0
+    variants = [path for path in practice.iterdir() if path.is_dir()] if practice.is_dir() else []
+    for variant in variants:
+        for file in variant.rglob("*.py"):
+            if not file.is_file():
+                continue
+            # Ignore the variant's own name; use a task folder or a filename like 12.py.
+            number = next(
+                (part for part in file.relative_to(variant).parts[:-1]
+                 if part.isascii() and part.isdigit()),
+                file.stem,
+            )
+            if number.isascii() and number.isdigit():
+                counts[str(int(number))] += 1
+    stats = sorted(counts.items(), key=lambda item: (int(item[0]), item[0]))
     lines = [
         f"**Всего решено задач: {sum(count for _, count in stats)}**",
         "",
-        f"**Решено вариантов: {variants}**",
+        f"**Решено вариантов: {len(variants)}**",
         "",
         "| Задание | Решено |",
         "|---------|--------|",

@@ -46,11 +46,28 @@ class StatisticsTests(RepositoryTest):
         result = readme.read_bytes()
         self.assertTrue(result.startswith(before.encode()))
         self.assertTrue(result.endswith(after.encode()))
-        self.assertIn("**Всего решено задач: 2**".encode(), result)
+        self.assertIn("**Всего решено задач: 3**".encode(), result)
         self.assertIn("**Решено вариантов: 2**".encode(), result)
         self.assertIn(b"| 2 | 0 |\r\n| 16 | 2 |", result)
+        self.assertIn(b"| 17 | 1 |", result)
         stats.update_stats(self.root)
         self.assertEqual(readme.read_bytes(), result)
+
+    def test_practice_solutions_join_task_totals(self):
+        self.write("13/any-name.py")
+        self.write("practice tests/123/12.py")
+        self.write("practice tests/123/13/13.py")
+        self.write("practice tests/123/17/nested/any-name.py")
+        self.write("practice tests/second/13.py")
+        self.write("practice tests/123/helper.py")
+        self.write("practice tests/123/12.txt")
+        self.write("practice tests/12.py")
+        stats.update_stats(self.root)
+        text = (self.root / "README.md").read_text()
+        self.assertIn("**Всего решено задач: 5**", text)
+        self.assertIn("**Решено вариантов: 2**", text)
+        self.assertIn("| 12 | 1 |\n| 13 | 3 |\n| 17 | 1 |", text)
+        self.assertNotIn("| 123 |", text)
 
     def test_missing_readme_and_markers(self):
         readme = self.root / "README.md"
