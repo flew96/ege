@@ -2,10 +2,16 @@
 
 from collections import Counter
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parent.parent
 START = "<!-- EGE_STATS_START -->"
 END = "<!-- EGE_STATS_END -->"
+
+
+def badge(label: str, value: int, color: str) -> str:
+    url = f"https://img.shields.io/badge/{quote(label)}-{value}-{color}"
+    return f"![{label}: {value}]({url}?style=for-the-badge&labelColor=1e293b)"
 
 
 def update_stats(root: Path) -> None:
@@ -31,15 +37,25 @@ def update_stats(root: Path) -> None:
             if number.isascii() and number.isdigit():
                 counts[str(int(number))] += 1
     stats = sorted(counts.items(), key=lambda item: (int(item[0]), item[0]))
+    maximum = max(counts.values(), default=0)
     lines = [
-        f"**Всего решено задач: {sum(count for _, count in stats)}**",
+        badge("Всего решено задач", sum(counts.values()), "6366f1") + " "
+        + badge("Решено вариантов", len(variants), "14b8a6"),
         "",
-        f"**Решено вариантов: {len(variants)}**",
+        "### Решения по заданиям",
         "",
-        "| Задание | Решено |",
-        "|---------|--------|",
-        *(f"| {number} | {count} |" for number, count in stats),
+        "| Задание | Решено | Объём практики |",
+        "|:-------:|-------:|:---------------|",
     ]
+    for number, count in stats:
+        filled = max(1, round(count / maximum * 12)) if count else 0
+        bar = "▰" * filled + "▱" * (12 - filled)
+        lines.append(f"| {number} | {count} | `{bar}` |")
+    lines.extend([
+        "",
+        "<sub>Учитываются отдельные задачи и задачи из вариантов. "
+        "Длина полоски показывает число решений относительно самого частого задания.</sub>",
+    ])
     readme = root / "README.md"
     original = readme.read_bytes() if readme.exists() else b""
     text = original.decode("utf-8")
