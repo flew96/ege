@@ -37,25 +37,18 @@ def update_stats(root: Path) -> None:
             if number.isascii() and number.isdigit():
                 counts[str(int(number))] += 1
     stats = sorted(counts.items(), key=lambda item: (int(item[0]), item[0]))
-    maximum = max(counts.values(), default=0)
     lines = [
         badge("Всего решено задач", sum(counts.values()), "6366f1") + " "
         + badge("Решено вариантов", len(variants), "14b8a6"),
         "",
         "### Решения по заданиям",
         "",
-        "| Задание | Решено | Объём практики |",
-        "|:-------:|-------:|:---------------|",
-    ]
-    for number, count in stats:
-        filled = max(1, round(count / maximum * 12)) if count else 0
-        bar = "▰" * filled + "▱" * (12 - filled)
-        lines.append(f"| {number} | {count} | `{bar}` |")
-    lines.extend([
+        "| Задание | Решено |",
+        "|:-------:|-------:|",
+        *(f"| {number} | {count} |" for number, count in stats),
         "",
-        "<sub>Учитываются отдельные задачи и задачи из вариантов. "
-        "Длина полоски показывает число решений относительно самого частого задания.</sub>",
-    ])
+        "<sub>Учитываются отдельные задачи и задачи из вариантов.</sub>",
+    ]
     readme = root / "README.md"
     original = readme.read_bytes() if readme.exists() else b""
     text = original.decode("utf-8")
