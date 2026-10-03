@@ -1,0 +1,25 @@
+from sys import setrecursionlimit
+
+setrecursionlimit(30000)
+
+def f(n):
+    if n >= 21:
+        return (
+            f(n-8) + 1095
+        )
+    else:
+        return (
+            10 * (g(n - 7) - 36)
+        )
+
+def g(n):
+    if n >= 22560:
+        return (
+            n/23 + 33
+        )
+    else:
+        return (
+            g(n+11) - 4
+        )
+
+print(f(548))
