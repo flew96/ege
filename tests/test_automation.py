@@ -64,12 +64,31 @@ class StatisticsTests(RepositoryTest):
         self.write("practice tests/123/12.txt")
         self.write("practice tests/12.py")
         stats.update_stats(self.root)
-        text = (self.root / "README.md").read_text()
+        text = (self.root / "README.md").read_text(encoding="utf-8")
         self.assertIn("Всего решено задач: 5", text)
         self.assertIn("Решено вариантов: 2", text)
         for row in ("| 12 | 1 |", "| 13 | 3 |", "| 17 | 1 |"):
             self.assertIn(row, text)
         self.assertNotIn("| 123 |", text)
+
+    def test_spreadsheets_padded_folders_and_task_ranges(self):
+        self.write("03/3_02053.ods")
+        self.write("03/3_27269.xlsx")
+        self.write("09/02034/02034.py")
+        self.write("09/02034/02034.txt")
+        self.write("19-21/29974.py")
+        self.write("practice tests/1/3.ods")
+        self.write("practice tests/1/18_29350 (1).ods")
+        self.write("practice tests/1/19-21.py")
+        self.write("practice tests/1/9/9.py")
+        self.write("practice tests/1/9/9_29341.ods")
+        stats.update_stats(self.root)
+        text = (self.root / "README.md").read_text(encoding="utf-8")
+        self.assertIn("Всего решено задач: 12", text)
+        for row in ("| 3 | 3 |", "| 9 | 2 |", "| 18 | 1 |", "| 19 | 2 |", "| 20 | 2 |", "| 21 | 2 |"):
+            self.assertIn(row, text)
+        self.assertNotIn("| 03 |", text)
+        self.assertLess(text.index("| 3 |"), text.index("| 9 |"))
 
     def test_missing_readme_and_markers(self):
         readme = self.root / "README.md"
@@ -106,7 +125,8 @@ class CommitTests(RepositoryTest):
         self.git("config", "commit.gpgsign", "false")
         self.git("config", "core.hooksPath", str(self.root / "no-hooks"))
         (self.root / "scripts").mkdir()
-        shutil.copyfile(ROOT / "scripts/ege_commit.py", self.root / "scripts/ege_commit.py")
+        for script in ("ege_commit.py", "update_stats.py"):
+            shutil.copyfile(ROOT / "scripts" / script, self.root / "scripts" / script)
 
     def git(self, *args):
         return subprocess.run(
@@ -130,6 +150,9 @@ class CommitTests(RepositoryTest):
         self.write("practice tests/Вариант 2/2.py")
         self.write("scripts/99/ignored.py")
         self.assertEqual(self.commit(), "EGE: +2 tasks [16: +2]; practice tests: +2")
+        self.write("03/3_27269.ods")
+        self.write("19-21/29974.py")
+        self.assertEqual(self.commit(), "EGE: +4 tasks [3: +1, 19: +1, 20: +1, 21: +1]")
         self.write("practice tests/123/18.py")
         self.assertEqual(self.commit(), "EGE: update files")
         self.write("practice tests/456/18.py")

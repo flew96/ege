@@ -4,6 +4,8 @@ import subprocess
 from collections import Counter
 from pathlib import Path, PurePosixPath
 
+from update_stats import solutions, task_numbers
+
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -30,11 +32,13 @@ def main() -> None:
         return
 
     tasks = Counter()
-    for name in git("diff", "--cached", "--name-only", "--diff-filter=A", "-z").split("\0"):
-        path = PurePosixPath(name)
-        if (len(path.parts) >= 2 and path.suffix == ".py"
-                and path.parts[0].isascii() and path.parts[0].isdigit()):
-            tasks[path.parts[0]] += 1
+    added = [
+        ROOT / name
+        for name in git("diff", "--cached", "--name-only", "--diff-filter=A", "-z").split("\0")
+        if len(parts := PurePosixPath(name).parts) >= 2 and task_numbers(parts[0])
+    ]
+    for numbers in solutions(added, ROOT):
+        tasks.update(numbers)
 
     has_head = subprocess.run(
         ["git", "rev-parse", "--verify", "HEAD"], cwd=ROOT,
@@ -47,7 +51,7 @@ def main() -> None:
     if tasks:
         details = ", ".join(
             f"{number}: +{count}"
-            for number, count in sorted(tasks.items(), key=lambda item: int(item[0]))
+            for number, count in sorted(tasks.items())
         )
         summary.append(f"+{sum(tasks.values())} tasks [{details}]")
     if added_variants:
