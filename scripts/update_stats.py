@@ -1,5 +1,7 @@
 """Update EGE statistics while preserving README content outside the markers."""
 
+from __future__ import annotations
+
 import re
 from collections import Counter
 from pathlib import Path
