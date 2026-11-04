@@ -67,8 +67,6 @@ for s in range(38, 1000):
     if f21(s):
         print(s)
         
-76
-77
 80
 81
 156
