@@ -1,4 +1,4 @@
-f = open(r"24\20909\24_20909.txt").read()
+f = open(r"24/20909/24_20909.txt").read()
 
 f = f.replace("AB", "&")
 
