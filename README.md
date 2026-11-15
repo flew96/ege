@@ -1,7 +1,7 @@
 ## 📊 Статистика
 
 <!-- EGE_STATS_START -->
-![Всего решено задач: 283](https://img.shields.io/badge/%D0%92%D1%81%D0%B5%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%BE%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87-283-6366f1?style=for-the-badge&labelColor=1e293b) ![Решено вариантов: 10](https://img.shields.io/badge/%D0%A0%D0%B5%D1%88%D0%B5%D0%BD%D0%BE%20%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%D0%BE%D0%B2-10-14b8a6?style=for-the-badge&labelColor=1e293b)
+![Всего решено задач: 284](https://img.shields.io/badge/%D0%92%D1%81%D0%B5%D0%B3%D0%BE%20%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%BE%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87-284-6366f1?style=for-the-badge&labelColor=1e293b) ![Решено вариантов: 10](https://img.shields.io/badge/%D0%A0%D0%B5%D1%88%D0%B5%D0%BD%D0%BE%20%D0%B2%D0%B0%D1%80%D0%B8%D0%B0%D0%BD%D1%82%D0%BE%D0%B2-10-14b8a6?style=for-the-badge&labelColor=1e293b)
 
 ### Решения по заданиям
 
@@ -12,9 +12,9 @@
 | 5 | 21 |
 | 8 | 23 |
 | 9 | 37 |
-| 10 | 31 |
+| 10 | 5 |
 | 12 | 1 |
-| 13 | 14 |
+| 13 | 34 |
 | 14 | 15 |
 | 15 | 23 |
 | 16 | 13 |
@@ -24,7 +24,8 @@
 | 20 | 7 |
 | 21 | 7 |
 | 22 | 6 |
-| 24 | 8 |
+| 23 | 6 |
+| 24 | 9 |
 
 <sub>Учитываются отдельные задачи и задачи из вариантов. Файл с задачами 19–21 засчитывается за каждую из трёх.</sub>
 <!-- EGE_STATS_END -->
