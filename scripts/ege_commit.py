@@ -21,7 +21,7 @@ def variants(paths: str) -> set:
         parts[1]
         for name in paths.split("\0")
         if len(parts := PurePosixPath(name).parts) >= 3
-        and parts[0] == "practice tests"
+        and parts[0] == "practice_tests"
     }
 
 
@@ -44,8 +44,8 @@ def main() -> None:
         ["git", "rev-parse", "--verify", "HEAD"], cwd=ROOT,
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
     ).returncode == 0
-    previous = git("ls-tree", "-r", "--name-only", "-z", "HEAD", "--", "practice tests/") if has_head else ""
-    added_variants = variants(git("ls-files", "-z", "--", "practice tests/")) - variants(previous)
+    previous = git("ls-tree", "-r", "--name-only", "-z", "HEAD", "--", "practice_tests/") if has_head else ""
+    added_variants = variants(git("ls-files", "-z", "--", "practice_tests/")) - variants(previous)
 
     summary = []
     if tasks:
@@ -55,7 +55,7 @@ def main() -> None:
         )
         summary.append(f"+{sum(tasks.values())} tasks [{details}]")
     if added_variants:
-        summary.append(f"practice tests: +{len(added_variants)}")
+        summary.append(f"practice_tests: +{len(added_variants)}")
     message = "EGE: " + ("; ".join(summary) or "update files")
     subprocess.run(["git", "commit", "-m", message], cwd=ROOT, check=True)
 

@@ -54,7 +54,7 @@ def update_stats(root: Path) -> None:
             counts.update({number: 0 for number in numbers})
             for tasks in solutions(path.rglob("*"), root):
                 counts.update(tasks)
-    practice = root / "practice tests"
+    practice = root / "practice_tests"
     variants = [path for path in practice.iterdir() if path.is_dir()] if practice.is_dir() else []
     for variant in variants:
         for tasks in solutions(variant.rglob("*"), variant):
