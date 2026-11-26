@@ -12,5 +12,4 @@ for word in product(sorted("ПРОГРАММА"), repeat=5):
         (word.count("О") >= 2)
     ):
         print(num)
-        break
     

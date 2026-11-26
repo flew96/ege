@@ -1,0 +1,1 @@
+f = open(r"practice_tests/25200946/24/24 (1).txt").read()

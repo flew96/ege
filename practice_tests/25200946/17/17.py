@@ -25,3 +25,4 @@ for i in range(len(data) - 1):
         max_sum = max(max_sum, sum(row))
 
 print(count, max_sum)
+# answ = 5013, 626
